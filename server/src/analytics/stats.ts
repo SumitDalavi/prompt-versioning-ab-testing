@@ -1,22 +1,22 @@
 import { getDb } from '../db/init';
 
 // Simple t-test logic since jstat had issues
-export function calculateSignificance(experimentId: string) {
+export async function calculateSignificance(experimentId: string) {
   const db = getDb();
   
   // Get raw scores per variant
-  const res = db.exec(`
+  const res = await db.query(`
     SELECT assigned_variant_id, quality_score 
     FROM experiment_logs 
-    WHERE experiment_id = '${experimentId}' AND quality_score IS NOT NULL
-  `);
+    WHERE experiment_id = $1 AND quality_score IS NOT NULL
+  `, [experimentId]);
 
-  if (res.length === 0) return { significant: false, pValue: 1, winner: null };
+  if (res.rows.length === 0) return { significant: false, pValue: 1, winner: null };
 
   const variantScores: Record<string, number[]> = {};
-  res[0].values.forEach((row: any[]) => {
-    const vId = row[0] as string;
-    const score = row[1] as number;
+  res.rows.forEach((row: any) => {
+    const vId = row.assigned_variant_id;
+    const score = parseFloat(row.quality_score);
     if (!variantScores[vId]) variantScores[vId] = [];
     variantScores[vId].push(score);
   });

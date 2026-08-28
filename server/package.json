@@ -17,7 +17,7 @@
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "jstat": "^1.9.6",
-    "sql.js": "^1.14.2",
+    "pg": "^8.23.0",
     "uuid": "^14.0.2",
     "zod": "^4.4.3"
   },
@@ -26,6 +26,7 @@
     "@types/express": "^5.0.6",
     "@types/jest": "^30.0.0",
     "@types/node": "^26.2.0",
+    "@types/pg": "^8.23.1",
     "@types/sql.js": "^1.4.11",
     "@types/supertest": "^7.2.1",
     "@types/uuid": "^10.0.0",

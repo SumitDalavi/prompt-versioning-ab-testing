@@ -1,7 +1,18 @@
 import request from "supertest";
 import { app, initDb } from "../src/index";
 
-jest.mock("uuid", () => ({ v4: () => "mock-uuid-1234" }));
+jest.mock("uuid", () => {
+  let counter = 0;
+  return { v4: () => `mock-uuid-${counter++}` };
+});
+
+jest.mock("pg", () => {
+  const mPool = {
+    query: jest.fn().mockResolvedValue({ rows: [] }),
+    end: jest.fn(),
+  };
+  return { Pool: jest.fn(() => mPool) };
+});
 
 beforeAll(async () => {
   await initDb();

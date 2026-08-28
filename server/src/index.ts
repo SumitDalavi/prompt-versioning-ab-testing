@@ -18,22 +18,22 @@ app.use(express.json());
 
 // --- REGISTRY ENDPOINTS ---
 
-app.post('/api/v1/prompts', (req, res) => {
+app.post('/api/v1/prompts', async (req, res) => {
   try {
     const { name, systemPrompt, model, temperature, commitMessage } = req.body;
-    const promptId = createPrompt(name);
-    createPromptVersion(promptId, systemPrompt, model || 'gpt-4o-mini', temperature || 0.7, commitMessage || 'Initial commit');
+    const promptId = await createPrompt(name);
+    await createPromptVersion(promptId, systemPrompt, model || 'gpt-4o-mini', temperature || 0.7, commitMessage || 'Initial commit');
     res.json({ promptId });
   } catch (e: any) {
     res.status(500).json({ error: e.message });
   }
 });
 
-app.post('/api/v1/prompts/:id/versions', (req, res) => {
+app.post('/api/v1/prompts/:id/versions', async (req, res) => {
   try {
     const promptId = req.params.id;
     const { systemPrompt, model, temperature, commitMessage } = req.body;
-    const versionId = createPromptVersion(promptId, systemPrompt, model, temperature, commitMessage);
+    const versionId = await createPromptVersion(promptId, systemPrompt, model, temperature, commitMessage);
     res.json({ versionId });
   } catch (e: any) {
     res.status(500).json({ error: e.message });
@@ -42,30 +42,30 @@ app.post('/api/v1/prompts/:id/versions', (req, res) => {
 
 // --- EXPERIMENT ENDPOINTS ---
 
-app.post('/api/v1/experiments', (req, res) => {
+app.post('/api/v1/experiments', async (req, res) => {
   try {
     const { name, promptId, variantA, variantB, trafficSplitA } = req.body;
-    const expId = createExperiment(name, promptId, variantA, variantB, trafficSplitA);
+    const expId = await createExperiment(name, promptId, variantA, variantB, trafficSplitA);
     res.json({ expId });
   } catch (e: any) {
     res.status(500).json({ error: e.message });
   }
 });
 
-app.get('/api/v1/experiments', (req, res) => {
+app.get('/api/v1/experiments', async (req, res) => {
   try {
-    const experiments = getAllExperiments();
+    const experiments = await getAllExperiments();
     res.json({ experiments });
   } catch (e: any) {
     res.status(500).json({ error: e.message });
   }
 });
 
-app.get('/api/v1/experiments/:id/stats', (req, res) => {
+app.get('/api/v1/experiments/:id/stats', async (req, res) => {
   try {
     const expId = req.params.id;
-    const basicStats = getExperimentStats(expId);
-    const significance = calculateSignificance(expId);
+    const basicStats = await getExperimentStats(expId);
+    const significance = await calculateSignificance(expId);
     res.json({ basicStats, significance });
   } catch (e: any) {
     res.status(500).json({ error: e.message });
@@ -80,7 +80,7 @@ app.post('/api/v1/completions', async (req, res) => {
 
   try {
     // 1. Resolve variant
-    const activeExperiment = getActiveExperiment(promptId);
+    const activeExperiment = await getActiveExperiment(promptId);
     let targetVersionId;
     let expId = null;
 
@@ -93,7 +93,7 @@ app.post('/api/v1/completions', async (req, res) => {
       return res.status(400).json({ error: "No active experiment for this prompt." });
     }
 
-    const version = getPromptVersion(targetVersionId);
+    const version = await getPromptVersion(targetVersionId);
     if (!version) return res.status(404).json({ error: "Version not found" });
 
     // 2. Call LLM
@@ -113,7 +113,7 @@ app.post('/api/v1/completions', async (req, res) => {
     const latency = Date.now() - start;
 
     // 3. Log interaction
-    const logId = logExperimentInteraction(expId, sessionId, targetVersionId, latency);
+    const logId = await logExperimentInteraction(expId, sessionId, targetVersionId, latency);
 
     // 4. Async trigger evaluator
     evaluateResponseQuality(logId, finalSystemPrompt, userMessage, response.content as string).catch(console.error);

@@ -24,7 +24,7 @@ Rate the response from 1 to 5, where 1 is terrible/unhelpful, and 5 is excellent
       ["system", prompt]
     ]);
 
-    updateExperimentLogQuality(logId, result.score);
+    await updateExperimentLogQuality(logId, result.score);
   } catch (err) {
     console.error("Evaluation failed for log " + logId, err);
   }

@@ -7,6 +7,21 @@ services:
       - "4002:4002"
     environment:
       - PORT=4002
+      - DB_HOST=postgres
+      - DB_USER=postgres
+      - DB_PASS=postgres
+      - DB_NAME=prompts
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=prompts
+    ports:
+      - "5432:5432"
 
   client:
     build:
