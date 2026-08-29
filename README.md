@@ -1,6 +1,6 @@
 # prompt-versioning-ab-testing
 
-> **Maturity:** Partial Prototype
+> **Maturity:** Functional Prototype
 > _Git-like version control system specifically designed for managing and testing iterative changes to LLM prompts._
 
 ## Features
