@@ -1,22 +1,28 @@
-# prompt-versioning-ab-testing Architecture
+# Architecture — prompt-versioning-ab-testing
+> Last updated: 2026-08-29 | Maturity: Partial Prototype
+> _Prompt registry and A/B router._
 
 ## System Diagram
-The following Mermaid.js sequence diagram maps the core workflow and interactions within the system:
-
 ```mermaid
-sequenceDiagram
-    Developer->>API: Save Prompt v1.1
-API->>DB: Store Version Snapshot
-App->>API: Fetch active prompt
-API-->>App: Prompt v1.1
-App->>Telemetry: Record Performance
+flowchart TD
+    Client(["Upstream Service"])
+    API["Prompt Registry API"]
+    DB[("PostgreSQL")]
+
+    Client -->|"1. GET /prompt?name=welcome"| API
+    API -->|"2. Fetch active A/B split"| DB
+    DB -.-> API
+    API -->|"3. Return v2 (70%)"| Client
 ```
 
-## Component Breakdown
-- **Core Technology**: Node.js, MongoDB
-- **Design Paradigm**: Emphasizes high availability, fault tolerance, and security boundaries.
+## Component Table
+| Component | File | Responsibility | Tech |
+|---|---|---|---|
+| Client UI | `client/` | Admin dashboard | React |
+| Server | `server/` | A/B router logic | Node.js |
+| Database | `docker-compose.yml` | Stores versions | PostgreSQL |
 
-## Security & Scaling Considerations
-- Strict input validations and sanitization.
-- Horizontal scalability achieved via stateless workers and queues where applicable.
-- Encrypted data at rest and in transit.
+## Dependency Honesty Table
+| Dependency | Status | Notes |
+|---|---|---|
+| PostgreSQL | **Real** | Migrated from MongoDB/SQLite for transactional integrity. |
