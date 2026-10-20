@@ -1,8 +1,10 @@
 # prompt-versioning-ab-testing
 
-[![Release](https://img.shields.io/github/v/release/SumitDalavi/prompt-versioning-ab-testing)](https://github.com/SumitDalavi/prompt-versioning-ab-testing/releases)
+[![CI Pipeline](https://github.com/SumitDalavi/prompt-versioning-ab-testing/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/SumitDalavi/prompt-versioning-ab-testing/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/SumitDalavi/prompt-versioning-ab-testing?color=0969da&label=release&logo=github)](https://github.com/SumitDalavi/prompt-versioning-ab-testing/releases)
 [![Release Workflow](https://github.com/SumitDalavi/prompt-versioning-ab-testing/actions/workflows/release.yml/badge.svg)](https://github.com/SumitDalavi/prompt-versioning-ab-testing/actions/workflows/release.yml)
-
+[![SBOM](https://img.shields.io/badge/SBOM-SPDX%202.3-blueviolet?logo=spdx)](https://github.com/SumitDalavi/prompt-versioning-ab-testing/releases/tag/v0.2.0)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
 > **Maturity:** Functional Prototype
 > _Git-like version control system specifically designed for managing and testing iterative changes to LLM prompts._
@@ -27,13 +29,11 @@ npm test
 ## Architecture
 Please see the [Architecture Document](docs/architecture.md) for sequence diagrams and system design details.
 
-
 ## CI & Reliability Updates (August 2026)
 
 - **CI Pipeline Remediation:** Successfully resolved all CI/CD pipeline failures and established baseline CI workflows.
 - **Specific Fix:** Added and configured robust GitHub Actions workflows for automated testing, linting, and formatting.
 - **Status:** 🟩 Passing
-
 
 ## Mock Boundaries (Honest Scope)
 
