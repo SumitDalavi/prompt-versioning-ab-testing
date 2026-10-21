@@ -6,8 +6,7 @@
 [![SBOM](https://img.shields.io/badge/SBOM-SPDX%202.3-blueviolet?logo=spdx)](https://github.com/SumitDalavi/prompt-versioning-ab-testing/releases/tag/v0.2.0)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
-> **Maturity:** Functional Prototype
-> _Git-like version control system specifically designed for managing and testing iterative changes to LLM prompts._
+> Version control system specifically designed for managing, testing, and tracking iterative changes to LLM prompts.
 
 ## Features
 - Fully automated workflow.
